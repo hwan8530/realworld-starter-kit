@@ -1,4 +1,4 @@
-package com.realworld.backend.errorhandling.dto;
+package com.realworld.backend.common.errorhandling.dto;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

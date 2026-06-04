@@ -1,4 +1,4 @@
-package com.realworld.backend.security.jwt;
+package com.realworld.backend.common.security.jwt;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -18,23 +18,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtUtil jwtUtil;
 
 
-  //TODO : Body에서 Login 정보 추출해서 토큰 생성시에 넣어주는 로직 필요
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
     String token = extractToken(request);
-    if (token != null && jwtUtil.validateOnlyToken(token)) {
-      Authentication authentication = jwtUtil.getAuthentication(token, null);
+    if (token != null) {
+      Authentication authentication = jwtUtil.getAuthentication(token);
       if (authentication != null) {
         // SecurityContext에 인증 정보 저장
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        filterChain.doFilter(request, response);
       }
-    } else {
-      request.setAttribute("jwtException", new JwtException("유효하지 않은 JWT 토큰"));
-      SecurityContextHolder.clearContext();
-      filterChain.doFilter(request, response);
+      else {
+        // token이 있지만 JwtUtil에서 throw된 예외는 AuthenticationEntryPoint에서 처리하도록 request에 예외 정보를 저장
+        request.setAttribute("jwtException", new JwtException("유효하지 않은 JWT 토큰"));
+      }
     }
+    filterChain.doFilter(request, response);
   }
 
   private String extractToken(HttpServletRequest request) {

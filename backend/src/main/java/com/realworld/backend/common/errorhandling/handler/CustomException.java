@@ -1,4 +1,4 @@
-package com.realworld.backend.errorhandling.handler;
+package com.realworld.backend.common.errorhandling.handler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -26,4 +26,13 @@ public class User {
   private String image;
   @Enumerated(EnumType.STRING)
   private UserRole role;
+
+  public User (String username, String password, String email) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.bio = null;
+    this.image = null;
+    this.role = UserRole.USER;
+  }
 }

@@ -1,4 +1,4 @@
-package com.realworld.backend.security.jwt;
+package com.realworld.backend.common.security.jwt;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

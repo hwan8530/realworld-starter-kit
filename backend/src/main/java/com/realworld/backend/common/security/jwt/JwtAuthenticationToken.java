@@ -1,4 +1,4 @@
-package com.realworld.backend.security.jwt;
+package com.realworld.backend.common.security.jwt;
 
 import java.util.Collection;
 import org.jspecify.annotations.Nullable;
