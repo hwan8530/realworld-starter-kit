@@ -1,6 +1,7 @@
 package com.realworld.backend.common.security.jwt;
 
 import com.realworld.backend.user.dto.RequestUser.Login;
+import com.realworld.backend.user.service.CustomUserDetails;
 import com.realworld.backend.user.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -101,7 +102,7 @@ public class JwtUtil {
   public Authentication getAuthentication(String token) {
     try {
       Claims claims = getClaimsFromToken(token);
-      UserDetails userDetails = userDetailsService.loadUserByEmail(getEmailFromToken(claims));
+      CustomUserDetails userDetails = userDetailsService.loadUserByEmail(getEmailFromToken(claims));
       return new JwtAuthenticationToken(userDetails.getUsername(), token, userDetails.getAuthorities());
     } catch (UsernameNotFoundException e) {
       throw new RuntimeException("계정이 존재하지 않습니다.");

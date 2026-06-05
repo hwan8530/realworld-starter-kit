@@ -30,7 +30,7 @@ public class RequestUser<T> {
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
-  public static class Update {
+  public static class UpdateRequest {
     private String email;
     private String bio;
     private String image;
