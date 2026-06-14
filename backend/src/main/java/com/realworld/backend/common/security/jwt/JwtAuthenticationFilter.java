@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
   private final JwtUtil jwtUtil;
 
 
@@ -27,8 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       if (authentication != null) {
         // SecurityContext에 인증 정보 저장
         SecurityContextHolder.getContext().setAuthentication(authentication);
-      }
-      else {
+      } else {
         // token이 있지만 JwtUtil에서 throw된 예외는 AuthenticationEntryPoint에서 처리하도록 request에 예외 정보를 저장
         request.setAttribute("jwtException", new JwtException("유효하지 않은 JWT 토큰"));
       }
@@ -39,8 +39,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private String extractToken(HttpServletRequest request) {
     String bearerToken = request.getHeader("Authorization");
     String bearerHeader = "Bearer ";
-    if (!bearerToken.startsWith(bearerHeader))
+    if (bearerToken == null || !bearerToken.startsWith(bearerHeader)) {
       return null;
+    }
     return bearerToken;
   }
 }

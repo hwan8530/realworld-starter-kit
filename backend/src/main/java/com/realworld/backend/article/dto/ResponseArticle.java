@@ -1,6 +1,7 @@
 package com.realworld.backend.article.dto;
 
 import com.realworld.backend.user.dto.ResponseProfile;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,10 @@ public class ResponseArticle {
     ArticleDetails article;
   }
 
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  @NoArgsConstructor
   public static class MultipleArticle {
     List<ArticleDetails> articles;
     int articlesCount;
@@ -32,8 +37,8 @@ public class ResponseArticle {
     String description;
     String body;
     List<String> tagList;
-    Date createdAt;
-    Date updateAt;
+    LocalDateTime createdAt;
+    LocalDateTime updateAt;
     boolean favorited;
     int favoritesCount;
     ResponseProfile author;

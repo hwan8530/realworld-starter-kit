@@ -1,5 +1,7 @@
 package com.realworld.backend.user.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +16,11 @@ public class RequestUser<T> {
   @AllArgsConstructor
   @NoArgsConstructor
   public static class Login {
+    @NotNull
+    @NotBlank
     private String email;
+    @NotNull
+    @NotBlank
     private String password;
   }
 
@@ -22,8 +28,14 @@ public class RequestUser<T> {
   @AllArgsConstructor
   @NoArgsConstructor
   public static class Register {
+    @NotNull
+    @NotBlank
     private String username;
+    @NotNull
+    @NotBlank
     private String email;
+    @NotNull
+    @NotBlank
     private String password;
   }
 
@@ -31,6 +43,8 @@ public class RequestUser<T> {
   @AllArgsConstructor
   @NoArgsConstructor
   public static class UpdateRequest {
+    @NotNull
+    @NotBlank
     private String email;
     private String bio;
     private String image;

@@ -2,7 +2,6 @@ package com.realworld.backend.article.entity;
 
 import com.realworld.backend.user.entity.User;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,24 +15,28 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class FavoriteInfo {
+public class Comment {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_username")
-  private User user;
-  @ManyToOne(fetch = FetchType.LAZY)
+  private Long genId;
+  @ManyToOne
   @JoinColumn(name = "article_id")
   private Article article;
   private LocalDateTime createAt;
+  private LocalDateTime updateAt;
+  private String body;
+  @ManyToOne
+  @JoinColumn(name = "user_username")
+  private User author;
 
   @Builder
-  public FavoriteInfo(User user, Article article) {
-    this.user = user;
+  public Comment(Article article, String body, User author) {
+    LocalDateTime now = LocalDateTime.now();
     this.article = article;
-    this.createAt = LocalDateTime.now();
+    createAt = now;
+    updateAt = now;
+    this.body = body;
+    this.author = author;
   }
-
 }

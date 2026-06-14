@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
 public class RequestArticle<T> {
+
   private T article;
 
   @Getter
@@ -14,6 +16,7 @@ public class RequestArticle<T> {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class createArticleRequest {
+
     String title;
     String description;
     String body;
@@ -25,6 +28,7 @@ public class RequestArticle<T> {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class updateArticleRequest {
+
     String title;
     String description;
     String body;

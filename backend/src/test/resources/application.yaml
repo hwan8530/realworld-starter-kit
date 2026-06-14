@@ -1,9 +1,13 @@
 spring:
+  application:
+    name: backend
   datasource:
-    url: jdbc:h2:file:./data/testdb;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE
+    url: jdbc:h2:file:./backend/data/testdb;AUTO_SERVER=TRUE
+    #url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE
     username: sa
     password: sa
     driver-class-name: org.h2.Driver
+
   jpa:
     hibernate:
       ddl-auto: update # 개발: create/update, 운영: validate/none
@@ -11,11 +15,18 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace # 바인딩 파라미터 출력
+    org.springframework.boot.autoconfigure: DEBUG
 
 jwt:
-  secret: thisisasecretkeyforjwttoken
+  secret: thisisasecretkeyforjwttoken-must-be-32bytes-long
   expiration: 3600000 # 1시간 (밀리초)

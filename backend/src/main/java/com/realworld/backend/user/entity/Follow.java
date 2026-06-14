@@ -7,20 +7,25 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Follow {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_username")
-  private String from;
+  @JoinColumn(name = "from_user")
+  private User from;
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_username")
-  private String to;
+  @JoinColumn(name = "to_user")
+  private User to;
 
-  public Follow(String from, String to) {
+  public Follow(User from, User to) {
     this.from = from;
     this.to = to;
   }
