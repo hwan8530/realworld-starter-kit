@@ -34,7 +34,7 @@ public class ArticleController {
       @RequestParam("tag") String tag,
       @RequestParam("author") String author,
       @RequestParam("favorited") String favorited,
-      @RequestParam(name = "limit", defaultValue = "0") int limit,
+      @RequestParam(name = "limit", defaultValue = "1") int limit,
       @RequestParam(name = "offeset", defaultValue = "0") int offset) {
 
     return new ResponseEntity<>(

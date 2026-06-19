@@ -4,12 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Tag {
 
   @Id
@@ -17,6 +20,7 @@ public class Tag {
   private Long id;
   private String tagName;
 
+  @Builder
   public Tag(String tagName) {
     this.tagName = tagName;
   }

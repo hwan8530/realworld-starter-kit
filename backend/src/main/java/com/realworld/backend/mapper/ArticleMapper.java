@@ -6,6 +6,7 @@ import com.realworld.backend.article.entity.Article;
 import com.realworld.backend.article.entity.ArticleTag;
 import com.realworld.backend.article.entity.Comment;
 import com.realworld.backend.user.dto.ResponseProfile;
+import com.realworld.backend.user.dto.ResponseProfile.ResponseProfileDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -19,7 +20,7 @@ public interface ArticleMapper {
   @Mapping(source = "article.articleTags", target = "tagList")
   @Mapping(source = "favorited", target = "favorited")
   public ArticleDetails articleToDetails(Article article, boolean favorited, int favoritesCount,
-      ResponseProfile author);
+      ResponseProfileDetails author);
 
   default String articleTagsToString(ArticleTag articleTag) {
     if (articleTag == null) {

@@ -8,14 +8,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class RequestUser<T> {
+
   @Getter
   @Setter
   private T user;
+
+  public RequestUser(T user) {
+    this.user = user;
+  }
 
   @Getter
   @AllArgsConstructor
   @NoArgsConstructor
   public static class Login {
+
     @NotNull
     @NotBlank
     private String email;
@@ -28,6 +34,7 @@ public class RequestUser<T> {
   @AllArgsConstructor
   @NoArgsConstructor
   public static class Register {
+
     @NotNull
     @NotBlank
     private String username;
@@ -43,9 +50,12 @@ public class RequestUser<T> {
   @AllArgsConstructor
   @NoArgsConstructor
   public static class UpdateRequest {
+
     @NotNull
     @NotBlank
     private String email;
+    private String username;
+    private String password;
     private String bio;
     private String image;
   }

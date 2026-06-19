@@ -7,12 +7,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Follow {
 
   @Id
@@ -25,6 +28,7 @@ public class Follow {
   @JoinColumn(name = "to_user")
   private User to;
 
+  @Builder
   public Follow(User from, User to) {
     this.from = from;
     this.to = to;

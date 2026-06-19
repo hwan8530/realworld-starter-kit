@@ -2,6 +2,7 @@ package com.realworld.backend.common.security.spring;
 
 import com.realworld.backend.common.security.jwt.JwtAuthenticationEntryPoint;
 import com.realworld.backend.common.security.jwt.JwtAuthenticationFilter;
+import com.realworld.backend.common.security.jwt.JwtUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final JwtAuthenticationFilter jwtAuthenticationFilter;
+  private final JwtUtil jwtUtil;
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
   @Bean
@@ -49,7 +50,8 @@ public class SecurityConfig {
             exhandle -> exhandle.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 
         // 4. JWT 필터
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtAuthenticationFilter(jwtUtil),
+            UsernamePasswordAuthenticationFilter.class)
 
         // Allow H2 console frames
         .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));

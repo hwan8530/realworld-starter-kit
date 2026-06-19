@@ -1,5 +1,6 @@
 package com.realworld.backend.user.controller;
 
+import com.realworld.backend.user.dto.RequestUser;
 import com.realworld.backend.user.dto.RequestUser.UpdateRequest;
 import com.realworld.backend.user.dto.ResponseUser;
 import com.realworld.backend.user.service.UserService;
@@ -16,15 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
+
   private final UserService userService;
 
-  @GetMapping("/")
+  @GetMapping("")
   public ResponseEntity<ResponseUser> getCurrentUser() {
     return new ResponseEntity<>(userService.getUser(), HttpStatus.OK);
   }
 
-  @PutMapping("/")
-  public ResponseEntity<ResponseUser> updateUser(@RequestBody UpdateRequest updateRequest) {
-    return new ResponseEntity<>(userService.updateUser(updateRequest), HttpStatus.OK);
+  @PutMapping("")
+  public ResponseEntity<ResponseUser> updateUser(
+      @RequestBody RequestUser<UpdateRequest> updateRequest) {
+    return new ResponseEntity<>(userService.updateUser(updateRequest.getUser()), HttpStatus.OK);
   }
 }

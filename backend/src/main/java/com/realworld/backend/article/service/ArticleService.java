@@ -32,12 +32,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
+@Slf4j
 public class ArticleService {
 
   private final ArticleRepository articleRepository;
@@ -55,9 +59,14 @@ public class ArticleService {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String currentUser = Objects.requireNonNull(
         Objects.requireNonNull(authentication).getPrincipal()).toString();
-
+    log.debug("tag : {}", tag);
+    log.debug("author : {}", author);
+    log.debug("favorited : {}", favorited);
+    log.debug("limit : {}", limit);
+    log.debug("offset : {}", offset);
     List<Article> articleList = articleRepository.getArticles(tag, author, favorited, limit,
         offset);
+    log.debug("artricleList : {}", articleList.size());
     MultipleArticle multipleArticle = new MultipleArticle(new ArrayList<ArticleDetails>(),
         articleList.size());
     for (Article article : articleList) {
@@ -87,6 +96,7 @@ public class ArticleService {
     return new SingleArticle(articleToDetails(article, false, ""));
   }
 
+  @Transactional
   public SingleArticle putSingleArticle(createArticleRequest request) {
     Authentication authentication = requireAuthentication();
     User currentUser = userRepository.findByUsername(
@@ -103,6 +113,7 @@ public class ArticleService {
         .updatedAt(now)
         .author(currentUser)
         .build();
+    articleRepository.save(article);
 
     // tagList를 순회하면서 DB에 없으면 Tag 부터 추가
     for (String tagName : request.getTagList()) {
@@ -121,6 +132,7 @@ public class ArticleService {
 
   }
 
+  @Transactional
   public SingleArticle updateArticle(String slug, updateArticleRequest request) {
     Authentication authentication = requireAuthentication();
     Article article = articleRepository.findBySlug(slug)
@@ -144,6 +156,7 @@ public class ArticleService {
             authentication.getPrincipal()).toString()));
   }
 
+  @Transactional
   public void deleteArticle(String slug) {
     Authentication authentication = requireAuthentication();
     String currentUser = Objects.requireNonNull(authentication.getPrincipal()).toString();
@@ -155,6 +168,7 @@ public class ArticleService {
     }
   }
 
+  @Transactional
   public SingleComment commentToAnArticle(String slug, RequestDetail request) {
     Authentication authentication = requireAuthentication();
     User curretUser = userRepository.findByUsername(
@@ -194,6 +208,7 @@ public class ArticleService {
     return new MultipleComment(comments);
   }
 
+  @Transactional
   public void deleteComment(String slug, long id) {
     Authentication authentication = requireAuthentication();
     String currentUser = Objects.requireNonNull(authentication.getPrincipal()).toString();
@@ -207,6 +222,7 @@ public class ArticleService {
     commentRepository.delete(article.getComments().get((int) id));
   }
 
+  @Transactional
   public SingleArticle favoriteArticle(String slug) {
     Authentication authentication = requireAuthentication();
     User currentUser = userRepository.findByUsername(
@@ -219,6 +235,7 @@ public class ArticleService {
         currentUser.getUsername()));
   }
 
+  @Transactional
   public SingleArticle unfavoriteArticle(String slug) {
     Authentication authentication = requireAuthentication();
     String currentUser = Objects.requireNonNull(authentication.getPrincipal()).toString();
@@ -248,10 +265,9 @@ public class ArticleService {
           article.getAuthor().getUsername()).isPresent();
       isMyFavorite = article.getFavoriteUsers().contains(currentUser);
     }
-    ResponseProfile profile = new ResponseProfile(
-        userMapper.userToProfile(article.getAuthor(), following));
+    log.debug("articletoDetails() getAuthor:{}", article.getAuthor().getUsername());
     return articleMapper.articleToDetails(article, isMyFavorite, article.getFavoriteInfos().size(),
-        profile);
+        userMapper.userToProfile(article.getAuthor(), following));
   }
 
   public String titleToSlug(String title) {
