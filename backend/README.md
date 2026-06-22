@@ -74,9 +74,14 @@ Swagger UI를 통해 전체 API 사양을 시각적으로 확인하고 직접 �
 
 ### 💻 Getting Started
 
-PrerequisitesJava 21+ (또는 사용 중인 JDK 버전)Installation & Runbash# 저장소 복제
+Prerequisites
+
+Java 21+
+
+### Installation & Runbash
 
 ```
+# 저장소 복제
 git clone https://github.com
 
 # 프로젝트 디렉토리 이동
