@@ -139,9 +139,7 @@ public class ArticleService {
         .orElseThrow(() -> new CustomException(CustomExceptionList.ARTICLE_NOT_FOUND));
     if (request.getTitle() != null) {
       article.setTitle(request.getTitle());
-      if (!article.getTitle().equals(request.getTitle())) {
-        article.setSlug(titleToSlug(request.getTitle()));
-      }
+      article.setSlug(titleToSlug(request.getTitle()));
     }
     if (request.getDescription() != null) {
       article.setDescription(request.getDescription());
@@ -179,7 +177,7 @@ public class ArticleService {
     Comment comment = article.addComment(request.getBody(), curretUser);
     ResponseProfile profile = new ResponseProfile(userMapper.userToProfile(curretUser, false));
     return new SingleComment(
-        articleMapper.commentToDetails(comment, (long) article.getComments().size() + 1, profile));
+        articleMapper.commentToDetails(comment, (long) article.getComments().size(), profile));
   }
 
   public MultipleComment getCommentsFromAnArticle(String slug) {
@@ -192,6 +190,7 @@ public class ArticleService {
     List<CommentDetails> comments = new ArrayList<>();
     int i = 0;
     boolean follow = false;
+    log.debug("size of comments : {}", article.getComments().size());
     for (Comment comment : article.getComments()) {
       if (optionalUser.isPresent()) {
         Optional<Follow> optionalFollow = followRepository.findByFromUserNameAndToUserName(
@@ -204,6 +203,7 @@ public class ArticleService {
       }
       comments.add(articleMapper.commentToDetails(comment, (long) i + 1,
           new ResponseProfile(userMapper.userToProfile(comment.getAuthor(), follow))));
+      i++;
     }
     return new MultipleComment(comments);
   }
@@ -215,11 +215,12 @@ public class ArticleService {
     Article article = articleRepository.findBySlug(slug)
         .orElseThrow(() -> new CustomException(CustomExceptionList.ARTICLE_NOT_FOUND));
 
-    if (!article.getComments().get((int) id).getAuthor().getUsername().equals(currentUser)) {
+    Comment comment = article.getComments().get((int) id - 1);
+    if (!comment.getAuthor().getUsername().equals(currentUser)) {
       throw new CustomException(CustomExceptionList.UNAUTHORIZED_REQUEST);
     }
-
-    commentRepository.delete(article.getComments().get((int) id));
+    article.getComments().remove(comment);
+    commentRepository.delete(comment);
   }
 
   @Transactional

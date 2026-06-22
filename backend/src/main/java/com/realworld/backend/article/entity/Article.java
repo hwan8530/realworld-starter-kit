@@ -41,7 +41,7 @@ public class Article {
   @ManyToOne
   @JoinColumn(name = "user_username")
   private User author;
-  @OneToMany(mappedBy = "genId", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
   @OrderBy("createAt ASC")
   private List<Comment> comments;
 

@@ -39,7 +39,9 @@ public class SecurityConfig {
 
         // 2. 경로별 권한 설정
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/users/**", "/api/users/login", "/api/tags", "/h2-console/**")
+            .requestMatchers("/api/users/**", "/api/users/login", "/api/tags", "/h2-console/**",
+                "/v3/api-docs/**",
+                "/swagger-ui/**")
             .permitAll()
             .requestMatchers(HttpMethod.GET, "/api/articles/*", "/api/articles/*/comments")
             .permitAll()
