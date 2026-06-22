@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: backend
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create # 테스트: 매번 초기화
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+    defer-datasource-initialization: true # 데이터 소스 초기화(data.sql 실행)를 JPA(DDL 실행) 이후로 미룸
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+logging:
+  level:
+    com.realworld.backend:
+      common: DEBUG
+      user: DEBUG
+#    org.hibernate.SQL: debug
+#    org.hibernate.type.descriptor.sql.BasicBinder: trace # 바인딩 파라미터 출력
+#    org.springframework.boot.autoconfigure: DEBUG
+
+jwt:
+  secret: thisisasecretkeyforjwttoken-must-be-32bytes-long
+  expiration: 3600000 # 1시간 (밀리초)
